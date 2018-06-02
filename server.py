@@ -47,7 +47,7 @@ def create_cluster():
     answer = answer.replace("b'{", "{")
     answer = answer.replace("'", "")
     # deleting the temp graph file
-    #os.remove(filename)
+    os.remove(filename)
 
     print(str(answer))
     return answer, 201
@@ -66,11 +66,11 @@ def create_track():
     # graph generation from google API
     google_agent = ga.GoogleAgent(locations_arr=locations, time=datetime.now())
     full_graph = google_agent.get_distance_graph();
-    # if request.json['destination'] is not None:
-    #     full_graph['destination'] = request.json['destination']
+
+    if str(request.json['destination']) != 'empty':
+        full_graph['destination'] = request.json['destination']
     full_graph['source'] = str(request.json['source']);
     full_graph = str(full_graph).replace(r"'", '"')
-
     # creating temp hashed name file and writing the graph into the file
     filename = str(hash(str(request.data) + str(datetime.now()))) + ".json"
     file = open(filename, 'w')
